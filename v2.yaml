@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-test
+spec:
+  progressDeadlineSeconds: 30
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: nginx-test
+  template:
+    metadata:
+      labels:
+        app: nginx-test
+    spec:
+      containers:
+        - name: nginx
+          image: <+artifact.image>
+          command:
+            - sh
+            - -c
+            - sleep 5 && exit 1
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /wrong-path
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
