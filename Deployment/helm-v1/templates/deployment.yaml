@@ -4,9 +4,17 @@ metadata:
   name: nginx-v1
 spec:
   replicas: {{ .Values.replicaCount }}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
   selector:
     matchLabels:
       app: nginx
+
   template:
     metadata:
       labels:
