@@ -4,6 +4,7 @@ metadata:
   name: nginx-v2
 spec:
   replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: 30
   strategy:
     type: RollingUpdate
     rollingUpdate:
